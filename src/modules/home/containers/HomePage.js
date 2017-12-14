@@ -1,7 +1,19 @@
 import React from 'react';
+import styled from 'styled-components';
 import {connect} from "react-redux";
 import PictureCarousel from "../../picture/components/PictureCarousel";
 import * as pictureActions from '../../picture/actions';
+import NoPictureUploaded from "../../picture/components/NoPictureUploaded";
+import PictureForm from "../../picture/components/PictureForm";
+
+const UploadPictureSection = styled.div`
+    margin-top: 60px;
+`;
+
+const PictureCarouselSection = styled.div`
+    margin-top: 21px;
+    margin-bottom: 21px;
+`;
 
 class HomePage extends React.Component {
 
@@ -12,7 +24,13 @@ class HomePage extends React.Component {
     render() {
         return (
             <div>
-                <PictureCarousel pictures={this.props.pictures}/>
+                <PictureCarouselSection>
+                    <PictureCarousel pictures={this.props.pictures}/>
+                </PictureCarouselSection>
+
+                <UploadPictureSection>
+                    <PictureForm/>
+                </UploadPictureSection>
             </div>
         )
     }

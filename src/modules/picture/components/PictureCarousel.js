@@ -5,14 +5,14 @@ import {MediaBox} from "react-materialize";
 const CarouselWrapper = styled.div`
     width: 100%;
     height: 130px;
-    position: relative;
-    top: 21px;
+    
     border: 1px;
     border-color: rgba(0, 0, 0, 0.3);
     border-style: solid;
     border-radius: 4px;
     overflow-x:scroll;
-    white-space: nowrap
+    white-space: nowrap;
+    background-color: #f9f9f9;
 `;
 
 const PictureWrapper = styled.div`
@@ -23,10 +23,11 @@ const PictureWrapper = styled.div`
     display: inline-block;
     margin-left: 25px;
     margin-right: 25px;
+    cursor: pointer;
 
     img {
         box-shadow: -0.3px -0.3px 5px rgba(0, 0, 0, 0.5);
-        border-radius: 5px;
+        border-radius: 3px;
         transition: all .5s;
     }
 
@@ -40,8 +41,8 @@ const PictureCarousel = ({pictures}) => {
         <div>
             <CarouselWrapper>
                 {pictures.map((picture, idx) => (
-                    <PictureWrapper>
-                        <MediaBox src={`${process.env.API_URL}/${picture.path_url}`}  width="120" height="100" />
+                    <PictureWrapper key={idx}>
+                        <img src={`${process.env.API_URL}/${picture.path_url}`}  width="120" height="100" />
                     </PictureWrapper>
                 ))}
             </CarouselWrapper>
