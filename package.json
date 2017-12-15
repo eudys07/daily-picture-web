@@ -4,7 +4,6 @@
   "description": "Upload a picture everyday and get your score",
   "main": "server",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -d",
     "dev": "npm run build && webpack-dev-server"
   },
