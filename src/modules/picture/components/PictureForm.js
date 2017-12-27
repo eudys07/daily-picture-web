@@ -8,7 +8,7 @@ const UploadPictureSection = styled.div`
 `;
 
 const SelectedPictureSection = styled.div`
-    display: ${props => props.visible ? 'block' : 'none'}
+    display: ${props => props.visible ? 'block' : 'none'};
 `;
 
 const TextareaSection = styled.div`
@@ -21,7 +21,7 @@ class PictureForm extends React.Component {
         super(props);
 
         this.state = {
-            visibleUploadPicture: true,
+            visibleSelectPicture: true,
             selectedPictureUrl: ''
         }
     }
@@ -35,19 +35,26 @@ class PictureForm extends React.Component {
     };
 
     onChangeInputFile = (evt) => {
-        if(!this.state.visibleUploadPicture)
+        if(!this.state.visibleSelectPicture)
             return;
 
         this.setState({
-            visibleUploadPicture: false,
+            visibleSelectPicture: false,
             selectedPictureUrl: URL.createObjectURL(evt.target.files[0])
         })
+    };
+
+    resetForm = () => {
+        this.setState({
+            visibleSelectPicture: true,
+            selectedPictureUrl: ''
+        });
     };
 
     render() {
         return (
             <form>
-                <UploadPictureSection visible={this.state.visibleUploadPicture}>
+                <UploadPictureSection visible={this.state.visibleSelectPicture}>
                     <NoPictureUploaded className="center" onClick={this.onClickUploadPictureHandler}
                                        title="Click here to upload your daily picture !"/>
 
@@ -60,18 +67,19 @@ class PictureForm extends React.Component {
                     </div>
                 </UploadPictureSection>
                 
-                <SelectedPictureSection className="center" visible={!this.state.visibleUploadPicture}>
-                    <img src={this.state.selectedPictureUrl} width="700"/>
+                <SelectedPictureSection className="center" visible={!this.state.visibleSelectPicture}>
+                    <img className="responsive-img" src={this.state.selectedPictureUrl} width="700"/>
 
                     <br/>
                     <br/>
 
                     <div className="row">
-                        <form className="col s12">
+                        <div className="col s12">
                             <div className="row">
                                 <TextareaSection className="input-field">
                                     <textarea
                                         id="caption"
+                                        placeholder="Enter caption here..."
                                         className="materialize-textarea"
                                         data-length="120"/>
                                     <br/>
@@ -79,14 +87,14 @@ class PictureForm extends React.Component {
                                 </TextareaSection>
                             </div>
 
+                            <button onClick={this.resetForm} className="btn waves-effect waves-light white black-text" type="button" name="action">Cancel
+                                <i className="material-icons right">send</i>
+                            </button>
+                            <span> </span>
                             <button className="btn waves-effect waves-light blue" type="submit" name="action">Submit
                                 <i className="material-icons right">send</i>
                             </button>
-
-                            <button className="btn waves-effect waves-light blue" type="submit" name="action">Submit
-                                <i className="material-icons right">send</i>
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </SelectedPictureSection>
             </form>
