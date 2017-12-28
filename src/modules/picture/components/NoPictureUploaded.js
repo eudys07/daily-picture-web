@@ -10,7 +10,7 @@ const NoPictureUploaded = ({className, title, onClick}) => {
     return (
         <div className={className} onClick={onClick}>
             <Title >{title}</Title >
-            <img src={picture} alt="" width="450"/>
+            <img src={picture} alt="" width="450" className="responsive-img"/>
         </div>
     )
 };

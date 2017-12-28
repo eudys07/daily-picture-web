@@ -14,6 +14,34 @@ export function loadDailyPictures() {
     }
 }
 
+export function uploadDailyPicture(picture) {
+    return dispatch => {
+        const formData = new FormData();
+        formData.append('file', picture.file);
+        formData.append('caption', picture.caption);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+
+        return axios.post('/api/pictures/upload_picture',formData, config)
+            .then(response => {
+                let data = response.data;
+
+                dispatch(uploadDailyPictureSuccess(data));
+            });
+    }
+}
+
+export function uploadDailyPictureSuccess(picture) {
+    return {
+        type: actionTypes.UPLOAD_DAILY_PICTURE_SUCCESS,
+        picture
+    }
+}
+
 export function loadDailyPicturesSuccess(pictures) {
     return {
         type: actionTypes.LOAD_DAILY_PICTURES_SUCCESS,

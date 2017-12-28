@@ -34,14 +34,16 @@ class PictureForm extends React.Component {
         this.fileInput.click();
     };
 
-    onChangeInputFile = (evt) => {
+    onInputFileChangeHandler = (evt) => {
         if(!this.state.visibleSelectPicture)
             return;
 
         this.setState({
             visibleSelectPicture: false,
             selectedPictureUrl: URL.createObjectURL(evt.target.files[0])
-        })
+        });
+
+        this.props.onPictureSelected(evt.target.files[0]);
     };
 
     resetForm = () => {
@@ -53,14 +55,14 @@ class PictureForm extends React.Component {
 
     render() {
         return (
-            <form>
+            <form onSubmit={this.props.onSubmit}>
                 <UploadPictureSection visible={this.state.visibleSelectPicture}>
                     <NoPictureUploaded className="center" onClick={this.onClickUploadPictureHandler}
                                        title="Click here to upload your daily picture !"/>
 
                     <div className="hide">
                         <input type="file"
-                               onChange={this.onChangeInputFile}
+                               onChange={this.onInputFileChangeHandler}
                                ref={(input) => {
                                    this.fileInput = input;
                                }}/>
@@ -81,14 +83,16 @@ class PictureForm extends React.Component {
                                         id="caption"
                                         placeholder="Enter caption here..."
                                         className="materialize-textarea"
+                                        value={this.props.picture.caption}
+                                        onChange={this.props.onCaptionInputChangeHandler}
                                         data-length="120"/>
                                     <br/>
                                     <label htmlFor="caption">Caption</label>
                                 </TextareaSection>
                             </div>
 
-                            <button onClick={this.resetForm} className="btn waves-effect waves-light white black-text" type="button" name="action">Cancel
-                                <i className="material-icons right">send</i>
+                            <button onClick={this.resetForm} className="btn waves-effect waves-light white black-text" type="reset" name="action">Cancel
+                                <i className="material-icons right">cancel</i>
                             </button>
                             <span> </span>
                             <button className="btn waves-effect waves-light blue" type="submit" name="action">Submit

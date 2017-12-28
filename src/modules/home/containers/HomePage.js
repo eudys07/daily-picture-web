@@ -17,9 +17,45 @@ const PictureCarouselSection = styled.div`
 
 class HomePage extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isDailyPictureUploaded: false,
+            pictureToUpload: {
+                file: null,
+                caption: ''
+            },
+            uploadedDailyPicture: {},
+            uploadingPicture: false
+        }
+    }
+
     componentDidMount() {
         this.props.dispatch(pictureActions.loadDailyPictures());
     }
+
+    onPictureSelected = (picture) => {
+        this.setState({pictureToUpload: {file: picture}})
+    };
+
+    onCaptionInputChangeHandler = (evt) => {
+        this.setState({
+           pictureToUpload: {
+               caption: evt.target.value
+           }
+        });
+    };
+
+    onSubmit = (evt) => {
+        debugger;
+        evt.preventDefault();
+
+        this.props.dispatch(pictureActions.uploadDailyPicture(this.state.pictureToUpload))
+            .then(picture => {
+                this.props.dispatch(pictureActions.loadDailyPictures());
+            });
+    };
 
     render() {
         return (
@@ -29,7 +65,10 @@ class HomePage extends React.Component {
                 </PictureCarouselSection>
 
                 <UploadPictureSection>
-                    <PictureForm/>
+                    <PictureForm picture={this.state.pictureToUpload}
+                                 onSubmit={this.onSubmit}
+                                 onPictureSelected={this.onPictureSelected}
+                                 onCaptionInputChangeHandler={this.onCaptionInputChangeHandler}/>
                 </UploadPictureSection>
             </div>
         )
