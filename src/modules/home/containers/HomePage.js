@@ -36,15 +36,22 @@ class HomePage extends React.Component {
     }
 
     onPictureSelected = (picture) => {
-        this.setState({pictureToUpload: {file: picture}})
+        debugger;
+        this.setState(Object.assign({}, this.state, {
+            pictureToUpload: {
+                ...this.state.pictureToUpload,
+                file: picture
+            }
+        }));
     };
 
     onCaptionInputChangeHandler = (evt) => {
-        this.setState({
-           pictureToUpload: {
-               caption: evt.target.value
-           }
-        });
+        this.setState(Object.assign({}, this.state, {
+            pictureToUpload: {
+                ...this.state.pictureToUpload,
+                caption: evt.target.value
+            }
+        }));
     };
 
     onSubmit = (evt) => {

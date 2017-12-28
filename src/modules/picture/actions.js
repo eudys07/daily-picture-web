@@ -16,6 +16,7 @@ export function loadDailyPictures() {
 
 export function uploadDailyPicture(picture) {
     return dispatch => {
+        debugger;
         const formData = new FormData();
         formData.append('file', picture.file);
         formData.append('caption', picture.caption);
@@ -26,7 +27,7 @@ export function uploadDailyPicture(picture) {
             }
         };
 
-        return axios.post('/api/pictures/upload_picture',formData, config)
+        return axios.post('/api/pictures/upload_picture', formData, config)
             .then(response => {
                 let data = response.data;
 
