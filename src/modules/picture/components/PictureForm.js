@@ -1,6 +1,7 @@
 import React from "react";
 import NoPictureUploaded from "./NoPictureUploaded";
 import styled from 'styled-components';
+import ResponsiveImage from "./ResponsiveImage";
 
 const UploadPictureSection = styled.div`
     cursor: pointer;
@@ -16,6 +17,10 @@ const TextareaSection = styled.div`
     margin: 0 auto;
 `;
 
+const VisibleDiv = styled.div`
+    display: ${props => props.visible ? 'block' : 'none'};
+`;
+
 class PictureForm extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +31,7 @@ class PictureForm extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         $('#caption').characterCounter();
     }
 
@@ -35,7 +40,7 @@ class PictureForm extends React.Component {
     };
 
     onInputFileChangeHandler = (evt) => {
-        if(!this.state.visibleSelectPicture)
+        if (!this.state.visibleSelectPicture)
             return;
 
         this.setState({
@@ -53,6 +58,7 @@ class PictureForm extends React.Component {
         });
     };
 
+
     render() {
         return (
             <form onSubmit={this.props.onSubmit}>
@@ -68,17 +74,18 @@ class PictureForm extends React.Component {
                                }}/>
                     </div>
                 </UploadPictureSection>
-                
+
                 <SelectedPictureSection className="center" visible={!this.state.visibleSelectPicture}>
-                    <img className="responsive-img" src={this.state.selectedPictureUrl} width="700"/>
+                    <ResponsiveImage imageUrl={this.state.selectedPictureUrl}/>
 
                     <br/>
                     <br/>
 
                     <div className="row">
                         <div className="col s12">
-                            <div className="row">
-                                <TextareaSection className="input-field">
+                            <VisibleDiv visible={!this.props.isUploadingPicture}>
+                                <div className="row">
+                                    <TextareaSection className="input-field">
                                     <textarea
                                         id="caption"
                                         placeholder="Enter caption here..."
@@ -86,18 +93,25 @@ class PictureForm extends React.Component {
                                         value={this.props.picture.caption}
                                         onChange={this.props.onCaptionInputChangeHandler}
                                         data-length="120"/>
-                                    <br/>
-                                    <label htmlFor="caption">Caption</label>
-                                </TextareaSection>
-                            </div>
+                                        <br/>
+                                        <label htmlFor="caption">Caption</label>
+                                    </TextareaSection>
+                                </div>
 
-                            <button onClick={this.resetForm} className="btn waves-effect waves-light white black-text" type="reset" name="action">Cancel
-                                <i className="material-icons right">cancel</i>
-                            </button>
-                            <span> </span>
-                            <button className="btn waves-effect waves-light blue" type="submit" name="action">Submit
-                                <i className="material-icons right">send</i>
-                            </button>
+                                <button onClick={this.resetForm}
+                                        className="btn waves-effect waves-light white black-text" type="reset"
+                                        name="action">Cancel
+                                    <i className="material-icons right">cancel</i>
+                                </button>
+                                <span> </span>
+                                <button className="btn waves-effect waves-light blue" type="submit" name="action">Submit
+                                    <i className="material-icons right">send</i>
+                                </button>
+                            </VisibleDiv>
+
+                            <VisibleDiv visible={this.props.isUploadingPicture} className="progress">
+                                <div className="indeterminate"/>
+                            </VisibleDiv>
                         </div>
                     </div>
                 </SelectedPictureSection>

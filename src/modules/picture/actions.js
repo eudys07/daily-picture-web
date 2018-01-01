@@ -16,7 +16,8 @@ export function loadDailyPictures() {
 
 export function uploadDailyPicture(picture) {
     return dispatch => {
-        debugger;
+        dispatch(uploadingPicture(true));
+
         const formData = new FormData();
         formData.append('file', picture.file);
         formData.append('caption', picture.caption);
@@ -31,8 +32,16 @@ export function uploadDailyPicture(picture) {
             .then(response => {
                 let data = response.data;
 
+                dispatch(uploadingPicture(false));
                 dispatch(uploadDailyPictureSuccess(data));
             });
+    }
+}
+
+export function uploadingPicture(isUploading) {
+    return {
+        type: actionTypes.UPLOADING_PICTURE,
+        isUploading
     }
 }
 

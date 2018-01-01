@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {connect} from "react-redux";
 import PictureCarousel from "../../picture/components/PictureCarousel";
 import * as pictureActions from '../../picture/actions';
-import NoPictureUploaded from "../../picture/components/NoPictureUploaded";
 import PictureForm from "../../picture/components/PictureForm";
 
 const UploadPictureSection = styled.div`
@@ -21,13 +20,10 @@ class HomePage extends React.Component {
         super(props);
 
         this.state = {
-            isDailyPictureUploaded: false,
             pictureToUpload: {
                 file: null,
                 caption: ''
-            },
-            uploadedDailyPicture: {},
-            uploadingPicture: false
+            }
         }
     }
 
@@ -36,7 +32,6 @@ class HomePage extends React.Component {
     }
 
     onPictureSelected = (picture) => {
-        debugger;
         this.setState(Object.assign({}, this.state, {
             pictureToUpload: {
                 ...this.state.pictureToUpload,
@@ -55,12 +50,12 @@ class HomePage extends React.Component {
     };
 
     onSubmit = (evt) => {
-        debugger;
         evt.preventDefault();
 
         this.props.dispatch(pictureActions.uploadDailyPicture(this.state.pictureToUpload))
             .then(picture => {
                 this.props.dispatch(pictureActions.loadDailyPictures());
+
             });
     };
 
@@ -68,15 +63,18 @@ class HomePage extends React.Component {
         return (
             <div>
                 <PictureCarouselSection>
-                    <PictureCarousel pictures={this.props.pictures}/>
+                    <PictureCarousel pictures={this.props.dailyPictures}/>
                 </PictureCarouselSection>
 
                 <UploadPictureSection>
                     <PictureForm picture={this.state.pictureToUpload}
                                  onSubmit={this.onSubmit}
                                  onPictureSelected={this.onPictureSelected}
+                                 isUploadingPicture={this.props.isUploadingPicture}
                                  onCaptionInputChangeHandler={this.onCaptionInputChangeHandler}/>
                 </UploadPictureSection>
+                
+                
             </div>
         )
     }
@@ -84,7 +82,7 @@ class HomePage extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        pictures: state.picture.dailyPictures
+        ...state.picture
     }
 }
 
