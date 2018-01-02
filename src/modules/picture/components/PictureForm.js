@@ -2,6 +2,7 @@ import React from "react";
 import NoPictureUploaded from "./NoPictureUploaded";
 import styled from 'styled-components';
 import ResponsiveImage from "./ResponsiveImage";
+import VisibleDiv from "../../common/components/VisibleDiv";
 
 const UploadPictureSection = styled.div`
     cursor: pointer;
@@ -17,9 +18,6 @@ const TextareaSection = styled.div`
     margin: 0 auto;
 `;
 
-const VisibleDiv = styled.div`
-    display: ${props => props.visible ? 'block' : 'none'};
-`;
 
 class PictureForm extends React.Component {
     constructor(props) {

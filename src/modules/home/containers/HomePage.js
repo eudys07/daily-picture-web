@@ -4,8 +4,10 @@ import {connect} from "react-redux";
 import PictureCarousel from "../../picture/components/PictureCarousel";
 import * as pictureActions from '../../picture/actions';
 import PictureForm from "../../picture/components/PictureForm";
+import VisibleDiv from "../../common/components/VisibleDiv";
+import ResponsiveImage from "../../picture/components/ResponsiveImage";
 
-const UploadPictureSection = styled.div`
+const PictureSection = styled.div`
     margin-top: 60px;
 `;
 
@@ -29,6 +31,7 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(pictureActions.loadDailyPictures());
+        this.props.dispatch(pictureActions.loadDailyPicture());
     }
 
     onPictureSelected = (picture) => {
@@ -55,7 +58,7 @@ class HomePage extends React.Component {
         this.props.dispatch(pictureActions.uploadDailyPicture(this.state.pictureToUpload))
             .then(picture => {
                 this.props.dispatch(pictureActions.loadDailyPictures());
-
+                this.props.dispatch(pictureActions.loadDailyPicture());
             });
     };
 
@@ -66,15 +69,26 @@ class HomePage extends React.Component {
                     <PictureCarousel pictures={this.props.dailyPictures}/>
                 </PictureCarouselSection>
 
-                <UploadPictureSection>
-                    <PictureForm picture={this.state.pictureToUpload}
-                                 onSubmit={this.onSubmit}
-                                 onPictureSelected={this.onPictureSelected}
-                                 isUploadingPicture={this.props.isUploadingPicture}
-                                 onCaptionInputChangeHandler={this.onCaptionInputChangeHandler}/>
-                </UploadPictureSection>
-                
-                
+                <VisibleDiv visible={this.props.isLoadingDailyPicture} className="progress">
+                    <div className="indeterminate"/>
+                </VisibleDiv>
+
+                <VisibleDiv visible={!this.props.isLoadingDailyPicture}>
+                    <PictureSection>
+                        <VisibleDiv visible={!this.props.isDailyPictureUploaded}>
+                            <PictureForm picture={this.state.pictureToUpload}
+                                         onSubmit={this.onSubmit}
+                                         onPictureSelected={this.onPictureSelected}
+                                         isUploadingPicture={this.props.isUploadingPicture}
+                                         onCaptionInputChangeHandler={this.onCaptionInputChangeHandler}/>
+                        </VisibleDiv>
+
+                        <VisibleDiv visible={this.props.isDailyPictureUploaded} className="center">
+                            <ResponsiveImage imageUrl={`${process.env.API_URL}/${this.props.dailyPicture.path_url}`}></ResponsiveImage>
+                        </VisibleDiv>
+                    </PictureSection>
+                </VisibleDiv>
+
             </div>
         )
     }
