@@ -2,8 +2,8 @@ let webpack = require('webpack');
 let path = require('path');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let BUILD_DIR = path.resolve(__dirname, 'dist');
-let APP_DIR = path.resolve(__dirname, 'src');
+const BUILD_DIR = path.resolve(__dirname, 'dist');
+const APP_DIR = path.resolve(__dirname, 'src');
 
 let config = {
     entry: ["babel-polyfill", APP_DIR + '/index.js'],
