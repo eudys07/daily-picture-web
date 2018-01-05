@@ -15,22 +15,23 @@ export function loadDailyPictures() {
 }
 export function loadDailyPicture() {
     return dispatch => {
-        dispatch(loadingDailyPicture(true));
         return axios.get('/api/pictures/daily_picture')
             .then(response => {
                 let picture = response.data;
 
                 dispatch(loadDailyPictureSuccess(picture));
-                dispatch(loadingDailyPicture(false));
 
                 return picture;
+            }).catch(err => {
+                let error = err.response.data.error;
+
+                return Promise.reject(error);
             });
     }
 }
 
 export function uploadDailyPicture(picture) {
     return dispatch => {
-        dispatch(uploadingPicture(true));
 
         const formData = new FormData();
         formData.append('file', picture.file);
@@ -46,25 +47,11 @@ export function uploadDailyPicture(picture) {
             .then(response => {
                 let data = response.data;
 
-                dispatch(uploadingPicture(false));
                 dispatch(uploadDailyPictureSuccess(data));
             });
     }
 }
 
-export function loadingDailyPicture(isLoading) {
-    return {
-        type: actionTypes.LOADING_DAILY_PICTURE,
-        isLoading
-    };
-}
-
-export function uploadingPicture(isUploading) {
-    return {
-        type: actionTypes.UPLOADING_PICTURE,
-        isUploading
-    }
-}
 
 export function uploadDailyPictureSuccess(picture) {
     return {

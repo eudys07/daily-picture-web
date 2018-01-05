@@ -23,7 +23,7 @@ class MainPage extends React.Component {
 
                 <div className="container">
                     <Switch>
-                        <Route path='/' component={AuthRequired(HomePage)}/>
+                        <Route path='/' component={HomePage}/>
                     </Switch>
                 </div>
             </div>

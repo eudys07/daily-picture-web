@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 
 export default function AuthRequired(Component) {
-    class WrapperClass extends React.Component {
+    class WrapperClass extends React.PureComponent {
         componentWillMount() {
             if(!localStorage.getItem('token')){
                 this.props.history.push('/login')

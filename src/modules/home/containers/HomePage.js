@@ -16,6 +16,8 @@ const PictureCarouselSection = styled.div`
     margin-bottom: 21px;
 `;
 
+const DailyPicttureSection = styled.div``;
+
 class HomePage extends React.Component {
 
     constructor(props) {
@@ -31,7 +33,10 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(pictureActions.loadDailyPictures());
-        this.props.dispatch(pictureActions.loadDailyPicture());
+        this.props.dispatch(pictureActions.loadDailyPicture())
+            .catch(err => {
+                Materialize.toast(err, 4000);
+            });
     }
 
     onPictureSelected = (picture) => {
@@ -63,29 +68,38 @@ class HomePage extends React.Component {
     };
 
     render() {
+        let DailyPicture = null;
+
+        if (this.props.isDailyPictureUploaded) {
+            DailyPicture =
+                <VisibleDiv visible={this.props.isDailyPictureUploaded} className="center">
+                    <DailyPicttureSection>
+                        <ResponsiveImage imageUrl={`${process.env.API_URL}/${this.props.dailyPicture.path_url}`}/>
+                    </DailyPicttureSection>
+                </VisibleDiv>
+        }
+
         return (
             <div>
                 <PictureCarouselSection>
                     <PictureCarousel pictures={this.props.dailyPictures}/>
                 </PictureCarouselSection>
 
-                <VisibleDiv visible={this.props.isLoadingDailyPicture} className="progress">
+                <VisibleDiv visible={this.props.isAjaxLoading} className="progress">
                     <div className="indeterminate"/>
                 </VisibleDiv>
 
-                <VisibleDiv visible={!this.props.isLoadingDailyPicture}>
+                <VisibleDiv visible={!this.props.isAjaxLoading}>
                     <PictureSection>
                         <VisibleDiv visible={!this.props.isDailyPictureUploaded}>
                             <PictureForm picture={this.state.pictureToUpload}
                                          onSubmit={this.onSubmit}
                                          onPictureSelected={this.onPictureSelected}
-                                         isUploadingPicture={this.props.isUploadingPicture}
+                                         isUploadingPicture={this.props.isAjaxLoading}
                                          onCaptionInputChangeHandler={this.onCaptionInputChangeHandler}/>
                         </VisibleDiv>
 
-                        <VisibleDiv visible={this.props.isDailyPictureUploaded} className="center">
-                            <ResponsiveImage imageUrl={`${process.env.API_URL}/${this.props.dailyPicture.path_url}`}></ResponsiveImage>
-                        </VisibleDiv>
+                        {DailyPicture}
                     </PictureSection>
                 </VisibleDiv>
 
@@ -96,7 +110,8 @@ class HomePage extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        ...state.picture
+        ...state.picture,
+        isAjaxLoading: state.common.isAjaxLoading
     }
 }
 
