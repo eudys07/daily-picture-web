@@ -6,6 +6,7 @@ import * as pictureActions from '../../picture/actions';
 import PictureForm from "../../picture/components/PictureForm";
 import VisibleDiv from "../../common/components/VisibleDiv";
 import ResponsiveImage from "../../picture/components/ResponsiveImage";
+import PictureDetail from "../../picture/components/PictureDetail";
 
 const PictureSection = styled.div`
     margin-top: 60px;
@@ -15,8 +16,6 @@ const PictureCarouselSection = styled.div`
     margin-top: 21px;
     margin-bottom: 21px;
 `;
-
-const DailyPicttureSection = styled.div``;
 
 class HomePage extends React.Component {
 
@@ -73,9 +72,7 @@ class HomePage extends React.Component {
         if (this.props.isDailyPictureUploaded) {
             DailyPicture =
                 <VisibleDiv visible={this.props.isDailyPictureUploaded} className="center">
-                    <DailyPicttureSection>
-                        <ResponsiveImage imageUrl={`${process.env.API_URL}/${this.props.dailyPicture.path_url}`}/>
-                    </DailyPicttureSection>
+                    <PictureDetail picture={this.props.dailyPicture}/>
                 </VisibleDiv>
         }
 
