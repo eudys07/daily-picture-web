@@ -5,8 +5,6 @@ export function login(username, password) {
     return dispatch => {
         return axios.post('/auth/token', {username, password})
             .then(response => {
-                let data = response.data;
-
                 dispatch(loginSuccess());
 
                 return response.data;
